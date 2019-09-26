@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ysd.videosite.dao.ZoneMapper">
+
+    <select id="selectAllZone" resultType="zone">
+        select z_id,z_name,z_parentId,z_lockStatus,z_lockTime,z_weight from zone;
+    </select>
+    
+    <select id="selectAutoCompleteZone" parameterType="string" resultType="zone">
+        select z_id,z_name,z_parentId,z_lockStatus,z_lockTime,z_weight from zone where z_name like "%"#{z_name}"%";
+    </select>
+    
+    <insert id="insertNewParentZone" parameterType="zone">
+        insert into zone(z_name,z_weight) values(#{z_name},#{z_weight});
+    </insert>
+    
+    <update id="updateZoneLockStatus" parameterType="int">
+        update zone set z_lockStatus = 1,z_lockTime = now() where z_id = #{z_id};
+    </update>
+    
+    <update id="updateZoneUnlockStatus" parameterType="int">
+        update zone set z_lockStatus = NULL,z_lockTime = NULL where z_id = #{z_id};
+    </update>
+    
+    <select id="selectAllParentZone" resultType="zone">
+        select z_id,z_name from zone where z_parentId = 0;
+    </select>
+    
+    <update id="updateZone" parameterType="zone">
+        update zone set z_name = #{z_name},z_weight = #{z_weight},z_parentId = #{z_parentId} where z_id = #{z_id};
+    </update>
+    
+    <insert id="insertChildrenZone" parameterType="zone">
+        insert into zone(z_name,z_weight,z_parentId) values(#{z_name},#{z_weight},#{z_parentId});
+    </insert>
+    
+</mapper>
