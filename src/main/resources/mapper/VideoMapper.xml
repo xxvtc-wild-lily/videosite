@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ysd.videosite.dao.VideoMapper">
+	<resultMap type="Video" id="videoMap">
+        <id column="v_id" property="v_id" />
+        <result column="v_name" property="v_name"/>
+        <result column="v_introduce" property="v_introduce"/>
+        <result column="v_videoUrl" property="v_videoUrl"/>
+        <result column="v_imgUrl" property="v_imgUrl"/>
+        <result column="v_uploadTime" property="v_uploadTime"/>
+        <result column="v_totalTime" property="v_totalTime"/>
+        <result column="v_playNum" property="v_playNum"/>
+        <result column="v_barrageNum" property="v_barrageNum"/>
+        <result column="v_commentNum" property="v_commentNum"/>
+        <result column="v_collectNum" property="v_collectNum"/>
+        <result column="v_likeNum" property="v_likeNum"/>
+        <result column="v_unlikeNum" property="v_unlikeNum"/>
+        <result column="u_id" property="u_id"/>
+        <result column="v_lockStatus" property="v_lockStatus"/>
+        <result column="v_lockTime" property="v_lockTime"/>
+        <result column="e_id" property="e_id"/>
+        <result column="v_examineStatus" property="v_examineStatus"/>
+        <result column="z_id" property="z_id"/>
+        <result column="ex_id" property="ex_id"/>
+        <result column="v_ext1" property="v_ext1"/>
+        <result column="v_ext2" property="v_ext2"/>
+        
+        <result column="e_id" property="employee.e_id"/>
+		<result column="e_name" property="employee.e_name"/>
+		
+		<result column="z_id" property="zone.z_id"/>
+		<result column="z_name" property="zone.z_name"/>
+		
+		  
+		<result column="ex_id" property="examine.ex_id"/>
+		<result column="ex_examineStatus" property="examine.ex_examineStatus"/>  
+		<result column="ex_examineTime" property="examine.ex_examineTime"/>
+		<result column="ex_examinePassTime" property="examine.ex_examinePassTime"/>  
+		<result column="ex_examineSuggestion" property="examine.ex_examineSuggestion"/> 
+    </resultMap>
+    <select id="SelectVideoByEmployeeId" parameterType="pagination" resultMap="videoMap">
+    	select z.*,v.*,ex.*,e.* from zone z 
+    	join video v on z.z_id=v.z_id 
+    	join examine ex on v.ex_id=ex.ex_id 
+    	join employee e on ex.e_id=e.e_id 
+    	where  e.e_id=#{e_id} 
+    	limit #{page},#{pageSize}
+    </select>
+    <select id="SelectVideoCountByEmployeeId" parameterType="pagination" resultType="int">
+    	select count(z.z_id) from zone z 
+    	join video v on z.z_id=v.z_id 
+    	join examine ex on v.ex_id=ex.ex_id 
+    	join employee e on ex.e_id=e.e_id 
+    	where  e.e_id=#{e_id} 
+    	limit #{page},#{pageSize}
+    </select>
+</mapper>

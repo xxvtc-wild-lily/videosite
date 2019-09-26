@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @Component
 public class Video {
-	
+
 	private Integer v_id;
 	private String v_name;
 	private String v_introduce;
@@ -34,5 +34,44 @@ public class Video {
 	private Integer ex_id;
 	private String v_ext1;
 	private Integer v_ext2;
+	private Employee employee;
+	private Zone zone;
+	private Examine examine;
+	public Video(Integer v_id, String v_name, String v_introduce, String v_videoUrl, String v_imgUrl,
+			Timestamp v_uploadTime, Time v_totalTime, Integer v_playNum, Integer v_barrageNum, Integer v_commentNum,
+			Integer v_collectNum, Integer v_likeNum, Integer v_unlikeNum, Integer u_id, Integer v_lockStatus,
+			Date v_lockTime, Integer e_id, Integer v_examineStatus, Integer z_id, Integer ex_id, String v_ext1,
+			Integer v_ext2, Employee employee, Zone zone, Examine examine) {
+		super();
+		this.v_id = v_id;
+		this.v_name = v_name;
+		this.v_introduce = v_introduce;
+		this.v_videoUrl = v_videoUrl;
+		this.v_imgUrl = v_imgUrl;
+		this.v_uploadTime = v_uploadTime;
+		this.v_totalTime = v_totalTime;
+		this.v_playNum = v_playNum;
+		this.v_barrageNum = v_barrageNum;
+		this.v_commentNum = v_commentNum;
+		this.v_collectNum = v_collectNum;
+		this.v_likeNum = v_likeNum;
+		this.v_unlikeNum = v_unlikeNum;
+		this.u_id = u_id;
+		this.v_lockStatus = v_lockStatus;
+		this.v_lockTime = v_lockTime;
+		this.e_id = e_id;
+		this.v_examineStatus = v_examineStatus;
+		this.z_id = z_id;
+		this.ex_id = ex_id;
+		this.v_ext1 = v_ext1;
+		this.v_ext2 = v_ext2;
+		this.employee = employee;
+		this.zone = zone;
+		this.examine = examine;
+	}
+	public Video() {
+		super();
+	}
 	
+
 }
