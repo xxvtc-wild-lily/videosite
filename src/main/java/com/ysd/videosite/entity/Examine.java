@@ -17,7 +17,7 @@ public class Examine {
 	private Timestamp ex_examineTime;
 	private Date ex_examinePassTime;
 	private String ex_examineSuggestion;
-	private String ex_ext1;
+	private String ex_ext1;//视频id
 	private Integer ex_ext2;
 	
 }

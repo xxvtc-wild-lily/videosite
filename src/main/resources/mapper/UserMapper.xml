@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ysd.videosite.dao.UserMapper">
+		<!-- 多条件分页查询用户 -->
+		<select id="selectDuoTiaoJianPaginationUser" parameterType="pagination" resultType="user">
+				select * from user 
+				<where>
+					<if test="u_name != null and u_name !=''">
+						and u_name like "%"#{u_name}"%"
+					</if>
+					<if test="u_lockStatus !=null and u_lockStatus !=''">
+						and u_lockStatus=#{u_lockStatus}
+					</if>
+				</where>
+				limit #{page},#{pageSize}
+		</select>
+		<!-- 多条件分页查询用户总条数 -->
+		<select id="selectDuoTiaoJianPaginationUserCount" parameterType="pagination" resultType="int">
+				select count(u_id) from user 
+				<where>
+					<if test="u_name != null and u_name !=''">
+						and u_name like "%"#{u_name}"%"
+					</if>
+					<if test="u_lockStatus !=null and u_lockStatus !=''">
+						and u_lockStatus=#{u_lockStatus}
+					</if>
+				</where>
+				limit #{page},#{pageSize}
+		</select>
+		<!-- 根据用户ID锁定用户 -->
+		<update id="lockingUserById" parameterType="int">
+				update user set u_lockStatus=1 where u_id=#{u_id}
+		</update>
+		<!-- 根据用户ID解锁用户 -->
+		<update id="unlockUserById" parameterType="int">
+				update user set u_lockStatus=0 where u_id=#{u_id}
+		</update>
+</mapper>
