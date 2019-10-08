@@ -37,11 +37,12 @@ public class Video {
 	private Employee employee;
 	private Zone zone;
 	private Examine examine;
+	private User user;
 	public Video(Integer v_id, String v_name, String v_introduce, String v_videoUrl, String v_imgUrl,
 			Timestamp v_uploadTime, Time v_totalTime, Integer v_playNum, Integer v_barrageNum, Integer v_commentNum,
 			Integer v_collectNum, Integer v_likeNum, Integer v_unlikeNum, Integer u_id, Integer v_lockStatus,
 			Date v_lockTime, Integer e_id, Integer v_examineStatus, Integer z_id, Integer ex_id, String v_ext1,
-			Integer v_ext2, Employee employee, Zone zone, Examine examine) {
+			Integer v_ext2, Employee employee, Zone zone, Examine examine, User user) {
 		super();
 		this.v_id = v_id;
 		this.v_name = v_name;
@@ -68,6 +69,7 @@ public class Video {
 		this.employee = employee;
 		this.zone = zone;
 		this.examine = examine;
+		this.user = user;
 	}
 	public Video() {
 		super();

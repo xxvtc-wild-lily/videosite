@@ -37,21 +37,87 @@
 		<result column="ex_examineTime" property="examine.ex_examineTime"/>
 		<result column="ex_examinePassTime" property="examine.ex_examinePassTime"/>  
 		<result column="ex_examineSuggestion" property="examine.ex_examineSuggestion"/> 
+		
+		<result column="u_name" property="user.u_name"/>
     </resultMap>
+    <!-- 查询属于自己的未审核的视频 -->
     <select id="SelectVideoByEmployeeId" parameterType="pagination" resultMap="videoMap">
-    	select z.*,v.*,ex.*,e.* from zone z 
+    	select z.*,v.*,ex.*,e.*,u.* from zone z 
     	join video v on z.z_id=v.z_id 
+    	join user u on v.u_id=u.u_id
     	join examine ex on v.ex_id=ex.ex_id 
     	join employee e on ex.e_id=e.e_id 
-    	where  e.e_id=#{e_id} 
+    	<where>
+    		e.e_id=#{e_id} and ex.ex_examineStatus=0
+    		<if test="in_v_uploadTime !=null and in_v_uploadTime !=''">
+    		  		and v_uploadTime &gt; #{in_v_uploadTime}
+    		</if>
+    		<if test="en_v_uploadTime !=null and en_v_uploadTime !=''">
+    				and v_uploadTime &lt; #{en_v_uploadTime}
+    		</if>
+    	</where>
     	limit #{page},#{pageSize}
     </select>
+    <!-- 查询属于自己的未审核的视频的总条数-->
     <select id="SelectVideoCountByEmployeeId" parameterType="pagination" resultType="int">
     	select count(z.z_id) from zone z 
     	join video v on z.z_id=v.z_id 
+    	join user u on v.u_id=u.u_id
     	join examine ex on v.ex_id=ex.ex_id 
     	join employee e on ex.e_id=e.e_id 
-    	where  e.e_id=#{e_id} 
+    	<where>
+    		e.e_id=#{e_id} and ex.ex_examineStatus=0
+    		<if test="in_v_uploadTime !=null and in_v_uploadTime !=''">
+    		  		and v_uploadTime &gt; #{in_v_uploadTime}
+    		</if>
+    		<if test="en_v_uploadTime !=null and en_v_uploadTime !=''">
+    				and v_uploadTime &lt; #{en_v_uploadTime}
+    		</if>
+    	</where>
+    	
     	limit #{page},#{pageSize}
     </select>
+    <!-- 审核通过 -->
+   	<update id="examineTongGuo" parameterType="examine">
+   			update examine set ex_examineStatus=1, ex_examinePassTime = now() where ex_ext1 = #{ex_ext1}
+   	</update>
+   	<!-- 审核未通过 -->
+   	<update id="examineWeiTongGuo" parameterType="examine">
+   			update examine set ex_examineStatus=2,ex_examinePassTime = now(),ex_examineSuggestion=#{ex_examineSuggestion} where ex_ext1 = #{ex_ext1}
+   	</update>
+   	<!-- 查询属于自己的已审核的视频 -->
+   	<select id="selectYiExamineVideo" parameterType="pagination" resultMap="videoMap">
+   		select z.*,v.*,ex.*,e.*,u.* from zone z 
+    	join video v on z.z_id=v.z_id 
+    	join user u on v.u_id=u.u_id
+    	join examine ex on v.ex_id=ex.ex_id 
+    	join employee e on ex.e_id=e.e_id 
+    	<where>
+    		e.e_id=#{e_id} and ex.ex_examineStatus !=0
+    		<if test="in_v_uploadTime !=null and in_v_uploadTime !=''">
+    		  		and v_uploadTime &gt; #{in_v_uploadTime}
+    		</if>
+    		<if test="en_v_uploadTime !=null and en_v_uploadTime !=''">
+    				and v_uploadTime &lt; #{en_v_uploadTime}
+    		</if>
+    	</where>
+    	limit #{page},#{pageSize}
+   	</select>
+   	<select id="selectYiExamineVideoCount" parameterType="pagination" resultType="int">
+   		select count(z.z_id) from zone z 
+    	join video v on z.z_id=v.z_id 
+    	join user u on v.u_id=u.u_id
+    	join examine ex on v.ex_id=ex.ex_id 
+    	join employee e on ex.e_id=e.e_id 
+    	<where>
+    		e.e_id=#{e_id} and ex.ex_examineStatus !=0
+    		<if test="in_v_uploadTime !=null and in_v_uploadTime !=''">
+    		  		and v_uploadTime &gt; #{in_v_uploadTime}
+    		</if>
+    		<if test="en_v_uploadTime !=null and en_v_uploadTime !=''">
+    				and v_uploadTime &lt; #{en_v_uploadTime}
+    		</if>
+    	</where>
+    	limit #{page},#{pageSize}
+   	</select>
 </mapper>
